@@ -1,0 +1,19 @@
+policyd.py -- simple policy daemon for Postfix
+
+There are much more complicated pieces of software that can act as policy
+daemons for Postfix SMTP access policy delegation as described in
+http://www.postfix.org/SMTPD_POLICY_README.html which are undoubtedly
+good and solid.
+
+But I needed something simple and customizable that can:
+
+- block compromised SASL accounts that are sending SPAM in large quentities
+- block IP addresses either in mynetworks or from the Internet that do so
+
+And these simple tasks should be done on a single server, in short time
+periods and with fairly low ammount of e-mail.
+
+Another wish was not to use any SQL database nor files as data storage
+backend. So the daemon stores all it's data in memory, which is acceptable
+cosidering low traffic and fact that it only blocks accounts and IP addresses.
+
