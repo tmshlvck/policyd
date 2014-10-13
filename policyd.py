@@ -28,13 +28,16 @@ import time
 # Constants
 
 RATE_PERIOD=300
-MAX_ADDRESS_RATE=200
-MAX_SASL_RATE=100
+MAX_DEFAULT_ADDRESS_RATE=200
+MAX_DEFAULT_SASL_RATE=100
 
 BLOCK_PERIOD=3600
 
 WHITELIST_ADDRESS=['127.0.0.1',]
 WHITELIST_SASL_USER=[]
+
+BULK_ADDRESS_MAP={} # {'192.168.1.5':500, ...}
+BULK_SASL_MAP={} # {'bot@something.com':100, ...}
 
 WARN_ONLY=True # pass emails and generate warnings instead of blocking
 
@@ -154,10 +157,16 @@ def rate_check(eid,cache,limit):
 
 
 def get_sasl_limit(sasl_username):
-    return MAX_SASL_RATE
+    if sasl_username in BULK_SASL_MAP:
+        return BULK_SASL_MAP[sasl_username]
+    else:
+        return MAX_DEFAULT_SASL_RATE
 
 def get_address_limit(address):
-    return MAX_ADDRESS_RATE
+    if address in BULK_ADDRESS_MAP:
+        return BULK_ADDRESS_MAP[address]
+    else:
+        return MAX_DEFAULT_ADDRESS_RATE
 
 
 # Test message
